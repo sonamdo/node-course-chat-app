@@ -14,14 +14,13 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('new user connected');
 
-  socket.emit('newMessage',{
-    from: 'message from',
-    text: 'message text',
-    createdAt: 123
-  });
-
-  socket.on('createMessage', (createMessage) => {
-    console.log('message received from client', createMessage)
+  socket.on('createMessage', (message) => {//receive message from client, then relay to to all clients with emi
+    console.log('message received from client', message)
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    })
   });
 
   socket.on('disconnect', (socket) =>{
