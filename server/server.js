@@ -19,14 +19,10 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
 
-  socket.on('createMessage', (message) => {//receive message from client, then relay to to all clients with emi
+  socket.on('createMessage', (message, callback) => {//receive message from client, then relay to to all clients with emi
     console.log('message received from client', message)
     io.emit('newMessage', generateMessage(message.from, message.text));
-    // socket.broadcast.emit('newMessage', {
-    //   from: message.from,
-    //   text: message.text,
-    //   createdAt: new Date().getTime()
-    // })
+    callback('this is from the server');
   });
 
   socket.on('disconnect', (socket) =>{
